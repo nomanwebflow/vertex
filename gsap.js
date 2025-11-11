@@ -1,19 +1,33 @@
+// GSAP Initialization and Setup
 document.addEventListener("DOMContentLoaded", (() => {
-    "undefined" == typeof window.gsap && document.documentElement.classList.add("gsap-not-found");
+    // Check if GSAP is loaded
+    if (typeof window.gsap === "undefined") {
+        console.error("GSAP library not found. Please include GSAP in your HTML.");
+        document.documentElement.classList.add("gsap-not-found");
+        return; // Exit early if GSAP is not loaded
+    }
+
+    // Check if ScrollTrigger is available
+    if (typeof ScrollTrigger === "undefined") {
+        console.error("ScrollTrigger plugin not found. Please include ScrollTrigger in your HTML.");
+        return;
+    }
+
+    // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
-    
+
     // FIX: Refresh ScrollTrigger after page load to handle scrolled positions
     window.addEventListener('load', () => {
         ScrollTrigger.refresh();
     });
-    
+
     // FIX: Also refresh on page show (handles back/forward navigation)
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
             ScrollTrigger.refresh();
         }
     });
-    
+
     // Initial refresh for immediate scroll position
     setTimeout(() => {
         ScrollTrigger.refresh();
@@ -127,6 +141,12 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    // Check if GSAP is available before running animations
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping hero section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_hero_section");
     e.length && e.forEach((e => {
         if (e.style.visibility = "visible", window.innerWidth < 992) return;
@@ -185,6 +205,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping services section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_services_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -207,6 +232,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping services block/works item animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_services_block_wrap, .lp_works_item");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -228,6 +258,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping works section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_works_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -255,6 +290,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping button animations.");
+        return;
+    }
+
     const e = document.querySelectorAll("[data-animate-button]");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -280,6 +320,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping testimonials section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_testimonials_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -311,6 +356,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping about section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_about_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -353,6 +403,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping founder section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_founder_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -394,6 +449,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping branding section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_branding_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -424,6 +484,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping process section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_process_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -482,6 +547,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping FAQ section animations.");
+        return;
+    }
+
     const e = document.querySelectorAll(".lp_faq_section");
     e.length && e.forEach((e => {
         e.style.visibility = "visible";
@@ -511,6 +581,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping navigation progress animation.");
+        return;
+    }
+
     gsap.to(".nav_progress", {
         scaleX: 1,
         ease: "none",
@@ -524,6 +599,11 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
+    if (typeof window.gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+        console.warn("GSAP or ScrollTrigger not loaded. Skipping footer animation.");
+        return;
+    }
+
     gsap.fromTo(".footer_component", {
         y: "50%"
     }, {

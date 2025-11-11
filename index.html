@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertex - GSAP Animations Demo</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <!-- Tippy.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .page-wrapper {
+            position: relative;
+        }
+
+        .main-wrapper {
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .lp_nav_component {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .lp_nav_component.is-fixed {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .lp_nav_component.theme-dark {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .nav_progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 1001;
+        }
+
+        .nav_btn_wrap {
+            cursor: pointer;
+        }
+
+        .lp_nav_overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        body.nav-opened .lp_nav_overlay {
+            display: block;
+        }
+
+        /* Hero Section */
+        .lp_hero_section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            visibility: hidden;
+        }
+
+        .lp_hero_trigger {
+            position: absolute;
+            top: 0;
+            height: 1px;
+        }
+
+        .lp_hero_logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-size-eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            opacity: 0.95;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .button_component {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .button_component:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .button-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        /* Hero Marquee */
+        .lp_hero_marquee_logo {
+            display: inline-block;
+            width: 80px;
+            height: 40px;
+            margin: 0 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+        }
+
+        .lp_hero_slider_component {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        /* Services Section */
+        .lp_services_section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: white;
+            visibility: hidden;
+        }
+
+        .lp_services_block_wrap {
+            display: inline-block;
+            padding: 2rem;
+            margin: 1rem;
+            background: #f9f9f9;
+            border-radius: 12px;
+            width: 300px;
+            visibility: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .lp_services_block_wrap:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Works Section */
+        .lp_works_section {
+            padding: 5rem 2rem;
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            visibility: hidden;
+            transition: background 0.3s ease;
+        }
+
+        .lp_works_section.theme-dark {
+            background: #000;
+        }
+
+        .lp_works_item {
+            display: inline-block;
+            width: 350px;
+            height: 250px;
+            margin: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            visibility: hidden;
+        }
+
+        /* Testimonials Section */
+        .lp_testimonials_section {
+            padding: 5rem 2rem;
+            background: white;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .lp_testimonials_slider_element {
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        /* About Section */
+        .lp_about_section {
+            padding: 5rem 2rem;
+            background: #f9f9f9;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .lp_cards_layout {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .lp_about_card_team_img_wrap {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .lp_about_card_team_img_wrap > * {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+
+        /* Founder Section */
+        .lp_founder_section {
+            padding: 5rem 2rem;
+            background: white;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .lp_founder_section img {
+            max-width: 400px;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        /* Branding Section */
+        .lp_branding_section {
+            padding: 5rem 2rem;
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .lp_branding_layout {
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            margin: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+
+        /* Process Section */
+        .lp_process_section {
+            padding: 5rem 2rem;
+            background: white;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .lp_cards_img {
+            width: 200px;
+            height: 200px;
+            margin: 1rem auto;
+            background: #f0f0f0;
+            border-radius: 12px;
+        }
+
+        .chat_wrap {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .chat_bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #667eea22, #764ba222);
+            border-radius: 12px;
+        }
+
+        .chat_date-wrap {
+            margin-bottom: 1rem;
+        }
+
+        .chat_date {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        /* FAQ Section */
+        .lp_faq_section {
+            padding: 5rem 2rem;
+            background: #f9f9f9;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .accordion_list {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .lp_cta_wrap {
+            margin-top: 2rem;
+        }
+
+        /* Footer */
+        .footer_component {
+            padding: 3rem 2rem;
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+        }
+
+        /* Button Animation */
+        [data-animate-button] {
+            visibility: hidden;
+            padding: 2rem;
+        }
+
+        /* Tooltip */
+        [data-tooltip-target] {
+            cursor: help;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+
+        .swiper {
+            width: 100%;
+            padding: 2rem 0;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lp_services_block_wrap,
+            .lp_works_item {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation Progress Bar -->
+        <div class="nav_progress"></div>
+
+        <!-- Navigation -->
+        <nav class="lp_nav_component">
+            <div class="nav_btn_wrap">☰ Menu</div>
+        </nav>
+
+        <div class="lp_nav_overlay"></div>
+
+        <div class="main-wrapper">
+            <!-- Hero Trigger -->
+            <div class="lp_hero_trigger"></div>
+
+            <!-- Hero Section -->
+            <section class="lp_hero_section">
+                <div class="lp_hero_logo">🚀</div>
+                <div class="text-size-eyebrow">Welcome to Vertex</div>
+                <h1>Beautiful GSAP Animations</h1>
+                <p>Experience smooth, professional animations powered by GSAP and ScrollTrigger</p>
+
+                <div class="button-group">
+                    <button class="button_component button-primary">Get Started</button>
+                    <button class="button_component button-secondary">Learn More</button>
+                </div>
+
+                <div>
+                    <span class="lp_hero_marquee_logo"></span>
+                    <span class="lp_hero_marquee_logo"></span>
+                    <span class="lp_hero_marquee_logo"></span>
+                    <span class="lp_hero_marquee_logo"></span>
+                </div>
+
+                <div class="lp_hero_slider_component"></div>
+            </section>
+
+            <!-- Services Section -->
+            <section class="lp_services_section">
+                <h2>Our Services</h2>
+                <div>
+                    <div class="lp_services_block_wrap">
+                        <h3>Design</h3>
+                        <p>Beautiful, modern designs</p>
+                    </div>
+                    <div class="lp_services_block_wrap">
+                        <h3>Development</h3>
+                        <p>Cutting-edge solutions</p>
+                    </div>
+                    <div class="lp_services_block_wrap">
+                        <h3>Animation</h3>
+                        <p>Smooth GSAP animations</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Works Section -->
+            <section class="lp_works_section">
+                <h2>Our Work</h2>
+                <p>Check out our portfolio</p>
+                <div>
+                    <div class="lp_works_item"></div>
+                    <div class="lp_works_item"></div>
+                    <div class="lp_works_item"></div>
+                </div>
+            </section>
+
+            <!-- Button Animation Demo -->
+            <section data-animate-button style="background: white; text-align: center;">
+                <div class="button-group">
+                    <button class="button_component button-primary">Action 1</button>
+                    <button class="button_component button-primary">Action 2</button>
+                    <button class="button_component button-primary">Action 3</button>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section class="lp_testimonials_section">
+                <h2>What People Say</h2>
+                <div class="lp_testimonials_slider_element swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <p>"Amazing animations!"</p>
+                        </div>
+                        <div class="swiper-slide">
+                            <p>"Love the smooth transitions"</p>
+                        </div>
+                        <div class="swiper-slide">
+                            <p>"Professional quality"</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="lp_about_section">
+                <h2>About Us</h2>
+                <p>We create amazing digital experiences</p>
+                <div class="lp_cards_layout">
+                    <div class="lp_services_block_wrap">Card 1</div>
+                    <div class="lp_services_block_wrap">Card 2</div>
+                    <div class="lp_services_block_wrap">Card 3</div>
+                </div>
+                <div class="lp_about_card_team_img_wrap">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </section>
+
+            <!-- Founder Section -->
+            <section class="lp_founder_section">
+                <h2>Meet Our Founder</h2>
+                <p>Passionate about creating amazing experiences</p>
+                <p>With years of experience in animation</p>
+                <div class="button-group">
+                    <button class="button_component button-primary">Contact</button>
+                    <button class="button_component button-secondary">LinkedIn</button>
+                </div>
+                <img src="https://via.placeholder.com/400x300" alt="Founder">
+            </section>
+
+            <!-- Branding Section -->
+            <section class="lp_branding_section">
+                <h2>Our Brands</h2>
+                <div>
+                    <div class="lp_branding_layout"></div>
+                    <div class="lp_branding_layout"></div>
+                    <div class="lp_branding_layout"></div>
+                    <div class="lp_branding_layout"></div>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="lp_process_section">
+                <h2>Our Process</h2>
+                <div class="lp_cards_layout">
+                    <div class="lp_services_block_wrap">
+                        <h3>Step 1</h3>
+                        <div class="lp_cards_img"></div>
+                        <div class="chat_wrap">
+                            <div class="chat_bg"></div>
+                            <div class="chat_date-wrap">
+                                <span class="chat_date">Today</span>
+                            </div>
+                            <p>Discovery Phase</p>
+                        </div>
+                    </div>
+                    <div class="lp_services_block_wrap">
+                        <h3>Step 2</h3>
+                        <div class="lp_cards_img"></div>
+                        <div class="chat_wrap">
+                            <div class="chat_bg"></div>
+                            <div class="chat_date-wrap">
+                                <span class="chat_date">Week 1</span>
+                            </div>
+                            <p>Design & Build</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="lp_faq_section">
+                <h2>Frequently Asked Questions</h2>
+                <div class="accordion_list">
+                    <div class="lp_services_block_wrap">Question 1</div>
+                    <div class="lp_services_block_wrap">Question 2</div>
+                    <div class="lp_services_block_wrap">Question 3</div>
+                </div>
+                <div class="lp_cta_wrap">
+                    <button class="button_component button-primary">Get in Touch</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer_component">
+            <p>&copy; 2024 Vertex. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- CRITICAL: Load GSAP and plugins BEFORE your custom script -->
+    <!-- GSAP Core -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+    <!-- GSAP ScrollTrigger Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Your Custom GSAP Animations -->
+    <script src="gsap.js"></script>
+</body>
+</html>
