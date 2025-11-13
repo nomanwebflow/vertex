@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", (() => {
 }));
 
 document.addEventListener("DOMContentLoaded", (() => {
-    const e = document.querySelectorAll(".lp_hero_section");
+    const e = document.querySelectorAll("[data-gsap-trigger=\"hero\"]");
     e.length && e.forEach((e => {
         if (e.style.visibility = "visible", window.innerWidth < 992) return;
         const t = gsap.timeline({
